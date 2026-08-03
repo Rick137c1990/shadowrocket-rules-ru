@@ -1,139 +1,56 @@
-📘 ShadowRocket Rules RU — Internal Modules Syntax Guide
+# Синтаксис Shadowrocket и собственные правила
 
-# ⚙️ ShadowRocket Modules Syntax Specification
+[English](manual.md) | [Русский](manual.ru.md)
 
-Этот документ описывает внутренний формат модулей ShadowRocket Rules RU.
+В этой инструкции описан синтаксис, используемый проектом. Пользовательские
+правила лучше хранить в отдельном модуле, чтобы обновления проекта их не
+перезаписывали.
 
-Каждый модуль — это `.conf` файл, содержащий набор правил маршрутизации, групп доменов и логических блоков.
-
----
-
-# 🧱 1. Общая структура модуля
-
-Модуль состоит из последовательных блоков:
-
-[METADATA]
-[RULES]
-[DOMAIN_GROUPS]
-[FINAL_ACTION]
-
----
-
-# 🧩 2. METADATA (мета-информация)
-
-Используется для описания модуля.
+## Минимальный пользовательский модуль
 
 ```ini
-# name: Russian Services
-# version: 1.0
-# description: Routing rules for RU services
-# author: Rick
+#!name=My Custom Rules
+#!desc=Personal routing exceptions
 
-📌 Все строки начинаются с #
-
-🌐 3. DOMAIN GROUPS (группы доменов)
-
-Используются для логической группировки сервисов.
-
-[DOMAIN_GROUP:VK]
-vk.com
-api.vk.com
-cdn.vk.com
-[DOMAIN_GROUP:YANDEX]
-yandex.ru
-api.yandex.ru
-yastatic.net
-
-📌 Особенности:
-
-одна группа = одна логическая сущность
-домены пишутся построчно
-wildcard поддерживается:
-*.vk.com
-🚦 4. RULES (правила маршрутизации)
-
-Основной блок логики.
-
-Формат:
-
-RULE,TYPE,VALUE,ACTION
-📌 4.1 Типы правил
-TYPE	Описание	Пример
-DOMAIN	конкретный домен	vk.com
-SUFFIX	домен и поддомены	.yandex.ru
-KEYWORD	ключевое слово	google
-GEOIP	геолокация IP	RU
-📌 4.2 Примеры
-RULE,DOMAIN,vk.com,DIRECT
-RULE,DOMAIN,api.vk.com,DIRECT
-RULE,SUFFIX,yandex.ru,DIRECT
-RULE,GEOIP,RU,DIRECT
-RULE,KEYWORD,google,PROXY
-🎯 5. ACTION (действия)
-
-Доступные действия:
-
-ACTION	Значение
-DIRECT	прямое соединение
-PROXY	через прокси
-REJECT	блокировка
-🧠 6. Порядок выполнения
-
-Правила обрабатываются сверху вниз:
-
-1. DOMAIN (самый приоритетный)
-2. SUFFIX
-3. KEYWORD
-4. GEOIP
-5. fallback (FINAL_ACTION)
-🧷 7. FINAL ACTION (поведение по умолчанию)
-
-Если ни одно правило не подошло:
-
-FINAL_ACTION,PROXY
-
-или
-
-FINAL_ACTION,DIRECT
-🧬 8. Пример полного модуля
-# name: Russian Services
-# version: 1.0
-
-[DOMAIN_GROUP:VK]
-vk.com
-api.vk.com
-
-[DOMAIN_GROUP:YANDEX]
-yandex.ru
-api.yandex.ru
-
-RULE,DOMAIN,vk.com,DIRECT
-RULE,DOMAIN,api.vk.com,DIRECT
-RULE,SUFFIX,yandex.ru,DIRECT
-RULE,GEOIP,RU,DIRECT
-RULE,KEYWORD,google,PROXY
-
-FINAL_ACTION,PROXY
-⚠️ 9. Рекомендации
-
-✔ Не дублировать правила
-✔ Сначала DOMAIN → потом GEOIP
-✔ Минимизировать KEYWORD (он медленнее)
-✔ Группы использовать для читаемости
-
-🚀 10. Расширения (future ideas)
-
-Планируемые возможности:
-
-include других модулей:
-
-INCLUDE,00_core.conf
-
-условные правила:
-
-IF TIME > 18:00 THEN PROXY
-
-версии схемы:
-
-SCHEMA_VERSION,1
+[Rule]
+DOMAIN,example.org,PROXY
+DOMAIN-SUFFIX,example.com,PROXY
+IP-CIDR,203.0.113.0/24,PROXY,no-resolve
 ```
+
+## Основные типы правил
+
+| Правило | Что определяет | Пример |
+|---|---|---|
+| `DOMAIN` | Один точный адрес | `DOMAIN,api.example.com,PROXY` |
+| `DOMAIN-SUFFIX` | Домен и все его поддомены | `DOMAIN-SUFFIX,example.com,PROXY` |
+| `DOMAIN-KEYWORD` | Адреса, содержащие указанную строку | `DOMAIN-KEYWORD,example,PROXY` |
+| `IP-CIDR` | Сеть IPv4 | `IP-CIDR,203.0.113.0/24,DIRECT,no-resolve` |
+| `IP-CIDR6` | Сеть IPv6 | `IP-CIDR6,2001:db8::/32,DIRECT,no-resolve` |
+| `GEOIP` | IP-адреса определённой страны | `GEOIP,RU,DIRECT` |
+| `FINAL` | Трафик, не совпавший с предыдущими правилами | `FINAL,PROXY` |
+
+## Действия
+
+- `DIRECT` — подключение напрямую, без прокси.
+- `PROXY` — использование политики с именем `PROXY`.
+- `REJECT` — блокировка запроса.
+
+Правила обрабатываются по порядку сверху вниз. Точные исключения должны находиться
+раньше общих правил для доменов, стран и финального действия. `FINAL` следует
+использовать только один раз в конце полной конфигурации, а не в дополнительном
+модуле.
+
+## Как создать свой модуль
+
+1. Скопируйте минимальный шаблон в новый файл с расширением `.conf`.
+2. Укажите уникальное имя в `#!name`.
+3. Добавляйте только понятные и необходимые вам правила.
+4. Сохраните файл локально или опубликуйте его как обычный текстовый файл.
+5. Подключите его через **Shadowrocket > Конфигурация > Модули**.
+6. Проверьте каждый домен до расширения набора правил.
+
+Не публикуйте в открытом репозитории учётные данные, ссылки на прокси, приватные
+ключи или токены подписок.
+
+Вернуться к [основному README](../README.ru.md).

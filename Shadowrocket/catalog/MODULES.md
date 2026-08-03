@@ -1,18 +1,18 @@
-# 🛒 ShadowRocket Modules Shop
+# Shadowrocket module catalog
 
-Этот файл содержит готовые модули для сборки ShadowRocket rules RU.  
-Каждый модуль можно подключать отдельно в зависимости от задач.
+Этот каталог содержит модули проекта ShadowRocket Rules RU. Каждый модуль можно
+подключить отдельно в зависимости от задач пользователя.
 
 ---
 
-## ⚙️ Core module (обязательная база)
+## Базовая конфигурация
 
-Базовый модуль для работы всей системы правил.
+Общая основа для работы системы правил.
 
-- 📌 Содержит основную логику маршрутизации
-- 📌 Обязателен для всех конфигураций
+- Содержит основную логику маршрутизации
+- Используется как база перед подключением дополнительных модулей
 
-https://raw.githubusercontent.com/Rick137c1990/ShadowRocket-rules-RU/refs/heads/main/Shadowrocket/modules/00_core.conf
+https://raw.githubusercontent.com/Rick137c1990/ShadowRocket-rules-RU/refs/heads/main/Shadowrocket/base/base.conf
 
 ---
 
