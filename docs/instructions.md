@@ -9,12 +9,12 @@ repository provides routing rules, not a proxy server.
 
 ## Choose an installation method
 
-### Ready-made profile (planned workflow)
+### Ready-made profile
 
-The `Shadowrocket/builds` directory reserves three profiles: `MINIMAL`, `ADVANCED`,
-and `FULL`. They are currently development manifests and will become directly
-importable configurations after the module review. Do not treat the current
-manifest files as production-ready Shadowrocket configurations.
+Choose `MINIMAL`, `ADVANCED`, or `FULL` in `Shadowrocket/builds`. Open the file on
+GitHub, copy its Raw URL, and add it as a remote configuration in Shadowrocket.
+The files are generated from the modules and contain no identical duplicate
+rules.
 
 ### Base plus optional modules
 
@@ -23,6 +23,10 @@ manifest files as production-ready Shadowrocket configurations.
 3. Copy the Raw URL of each required module.
 4. In Shadowrocket, open **Config > Modules**, add the URL, and enable the module.
 5. Review module order and test both DIRECT and PROXY destinations.
+
+To create personal rules, copy
+`Shadowrocket/custom/custom.example.conf`, rename it, and follow the
+[custom-rules guide](manual.md).
 
 ## Validation checklist
 

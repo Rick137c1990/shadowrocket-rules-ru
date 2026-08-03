@@ -6,14 +6,14 @@ A modular Shadowrocket routing project designed for users in Russia. The goal is
 to keep Russian services on a direct connection and route selected international
 services through the user's existing `PROXY` policy.
 
-> **Development status:** the repository is being restructured. The module rules
-> are still under review, so test a configuration before relying on it.
+> Always test routing after installation. Service availability and domain
+> infrastructure can change over time.
 
 ## Project model
 
 - `base/base.conf` contains the common foundation.
 - `modules/` contains optional feature and service rule modules.
-- `builds/` contains three preselected configurations for different use cases.
+- `builds/` contains three generated, directly importable configurations.
 - `catalog/MODULES.md` lists the available modules and their Raw links.
 - `docs/` explains installation, configuration syntax, and custom rules.
 
@@ -21,13 +21,16 @@ services through the user's existing `PROXY` policy.
 
 | Profile | Intended use |
 |---|---|
-| `MINIMAL` | Basic routing with the smallest rule set |
-| `ADVANCED` | Common Russian and international services |
-| `FULL` | All available project modules |
+| `MINIMAL` | Selected social and streaming services via proxy; other unmatched traffic direct |
+| `ADVANCED` | Common Russian services direct; other unmatched traffic through proxy |
+| `FULL` | Advanced routing plus privacy, crypto, and URL rewrites |
 
 The profiles are intended for users who do not want to select modules manually.
 Advanced users can start with the base configuration and add only the modules
 they need.
+
+Modules are intentionally self-contained and may share rules. Generated profiles
+are built by `scripts/build-configs.sh`, which removes identical duplicates.
 
 ## Documentation
 
