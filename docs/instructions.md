@@ -11,21 +11,21 @@ repository provides routing rules, not a proxy server.
 
 ### Ready-made profile
 
-Choose `MINIMAL`, `ADVANCED`, or `FULL` in `Shadowrocket/builds`. Open the file on
+Choose `minimal`, `advanced`, or `full` in `shadowrocket/builds`. Open the file on
 GitHub, copy its Raw URL, and add it as a remote configuration in Shadowrocket.
 The files are generated from the modules and contain no identical duplicate
 rules.
 
 ### Base plus optional modules
 
-1. Add `Shadowrocket/base/base.conf` as the base configuration.
-2. Open `Shadowrocket/catalog/MODULES.md`.
+1. Add `shadowrocket/base/base.conf` as the base configuration.
+2. Open the [module guide](modules.md).
 3. Copy the Raw URL of each required module.
 4. In Shadowrocket, open **Config > Modules**, add the URL, and enable the module.
 5. Review module order and test both DIRECT and PROXY destinations.
 
 To create personal rules, copy
-`Shadowrocket/custom/custom.example.conf`, rename it, and follow the
+`shadowrocket/custom/custom.example.conf`, rename it, and follow the
 [custom-rules guide](manual.md).
 
 ## Validation checklist

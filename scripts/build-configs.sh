@@ -2,9 +2,10 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-base_file="$repo_root/Shadowrocket/base/base.conf"
-modules_dir="$repo_root/Shadowrocket/modules"
-builds_dir="$repo_root/Shadowrocket/builds"
+base_file="$repo_root/shadowrocket/base/base.conf"
+modules_dir="$repo_root/shadowrocket/modules"
+builds_dir="${BUILD_OUTPUT_DIR:-$repo_root/shadowrocket/builds}"
+mkdir -p "$builds_dir"
 build_tmp="$(mktemp -d)"
 trap 'rm -rf "$build_tmp"' EXIT
 
@@ -27,8 +28,9 @@ append_rules() {
 
 generate_build() {
   local build_name="$1"
-  local final_action="$2"
-  shift 2
+  local display_name="$2"
+  local final_action="$3"
+  shift 3
 
   local output="$builds_dir/$build_name.conf"
   local rule_source="$build_tmp/$build_name.rules"
@@ -47,8 +49,10 @@ generate_build() {
   done
 
   {
-    printf '#!name=Shadowrocket Rules RU %s\n' "$build_name"
-    printf '#!desc=Generated profile. Do not edit; use scripts/build-configs.sh\n\n'
+    printf '#!name=Shadowrocket Rules RU — %s\n' "$display_name"
+    printf '#!desc=Generated profile. Do not edit; use scripts/build-configs.sh\n'
+    printf '#!author=Sergey Nazarov\n'
+    printf '#!updated=2026-08-04\n\n'
     printf '[General]\n'
     extract_section "$base_file" General
     printf '\n[Rule]\n'
@@ -68,32 +72,32 @@ generate_build() {
 }
 
 # MINIMAL proxies only commonly restricted communication and media services.
-generate_build MINIMAL DIRECT \
-  30_social_messaging.conf \
-  50_streaming.conf \
-  20_russian_services.conf \
-  10_geo_ru.conf
+generate_build minimal Minimal DIRECT \
+  30-social-messaging.conf \
+  50-streaming.conf \
+  20-russian-services.conf \
+  10-geo-ru.conf
 
 # ADVANCED uses the proxy by default while preserving Russian services directly.
-generate_build ADVANCED PROXY \
-  30_social_messaging.conf \
-  40_ai_developer.conf \
-  50_streaming.conf \
-  20_russian_services.conf \
-  25_vk_group.conf \
-  26_yandex_group.conf \
-  10_geo_ru.conf
+generate_build advanced Advanced PROXY \
+  30-social-messaging.conf \
+  40-ai-developer.conf \
+  50-streaming.conf \
+  20-russian-services.conf \
+  25-vk.conf \
+  26-yandex.conf \
+  10-geo-ru.conf
 
 # FULL adds privacy, security, crypto, and optional URL rewrites.
-generate_build FULL PROXY \
-  30_social_messaging.conf \
-  40_ai_developer.conf \
-  50_streaming.conf \
-  60_privacy_crypto.conf \
-  20_russian_services.conf \
-  25_vk_group.conf \
-  26_yandex_group.conf \
-  10_geo_ru.conf \
-  90_rewriters.conf
+generate_build full Full PROXY \
+  30-social-messaging.conf \
+  40-ai-developer.conf \
+  50-streaming.conf \
+  60-privacy-crypto.conf \
+  20-russian-services.conf \
+  25-vk.conf \
+  26-yandex.conf \
+  10-geo-ru.conf \
+  90-rewriters.conf
 
-printf 'Generated MINIMAL.conf, ADVANCED.conf, and FULL.conf\n'
+printf 'Generated minimal.conf, advanced.conf, and full.conf\n'

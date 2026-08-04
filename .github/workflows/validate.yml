@@ -1,0 +1,32 @@
+name: Validate rules
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run unit tests
+        run: python3 -m unittest discover -s tests -p "test_*.py" -v
+
+      - name: Rebuild profiles
+        run: ./scripts/build-configs.sh
+
+      - name: Validate and lint rules
+        run: ./scripts/validate-configs.sh
+
+      - name: Verify generated profiles are committed
+        run: git diff --exit-code

@@ -1,0 +1,30 @@
+name: Domain health report
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  dns-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check module domains
+        run: python3 scripts/check-domains.py --output artifacts/domain-health.json
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: domain-health
+          path: artifacts/domain-health.json
