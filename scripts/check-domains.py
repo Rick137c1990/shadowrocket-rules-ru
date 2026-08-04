@@ -55,6 +55,7 @@ def main() -> int:
 
     domains = collect_domains()
     results = []
+    # DNS latency dominates this optional check, so bounded concurrency keeps it practical.
     with ThreadPoolExecutor(max_workers=args.workers) as executor:
         futures = {executor.submit(resolve, domain, args.timeout): domain for domain in domains}
         for future in as_completed(futures):

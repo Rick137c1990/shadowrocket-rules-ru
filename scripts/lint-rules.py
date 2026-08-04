@@ -54,6 +54,7 @@ def lint_file(path: Path) -> list[Finding]:
         elif len(matches) > 1:
             findings.append(Finding("WARNING", path, matches[-1].source.number, f"duplicate rule for {identity[1]!r}"))
 
+    # Shadowrocket uses first-match semantics; an earlier broad suffix can hide exceptions.
     suffixes = [(index, rule) for index, rule in enumerate(rules) if rule.kind == "DOMAIN-SUFFIX"]
     exact_domains = [(index, rule) for index, rule in enumerate(rules) if rule.kind == "DOMAIN"]
     for domain_index, domain_rule in exact_domains:
@@ -111,6 +112,7 @@ def lint_file(path: Path) -> list[Finding]:
 
 
 def lint_across_modules(paths: list[Path]) -> list[Finding]:
+    # Same-policy overlap is expected because every module must remain standalone.
     findings: list[Finding] = []
     occurrences: dict[tuple[str, str], list] = defaultdict(list)
     for path in paths:

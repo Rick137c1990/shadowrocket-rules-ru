@@ -83,6 +83,7 @@ def validate_file(path: Path) -> list[str]:
     for line in config.orphan_lines:
         issues.append(error(path, line.number, "content outside a known section"))
 
+    # Reusable modules have a smaller contract than complete generated profiles.
     required = {"Rule"}
     if kind in {"base", "build"}:
         required |= {"General", "Host"}
@@ -151,6 +152,7 @@ def validate_file(path: Path) -> list[str]:
 
 def validate_generated_sync() -> list[str]:
     issues: list[str] = []
+    # Rebuild outside the repository to compare artifacts without changing the worktree.
     with tempfile.TemporaryDirectory(prefix="shadowrocket-builds-") as temp_dir:
         output = Path(temp_dir)
         subprocess.run(

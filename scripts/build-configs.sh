@@ -18,6 +18,7 @@ extract_section() {
   ' "$file"
 }
 
+# Modules stay untouched and standalone; deduplication happens only in generated builds.
 append_rules() {
   local output="$1"
   local file="$2"
@@ -56,6 +57,7 @@ generate_build() {
     printf '[General]\n'
     extract_section "$base_file" General
     printf '\n[Rule]\n'
+    # Preserve source comments while removing exact duplicate rules in first-seen order.
     awk '
       /^[[:space:]]*$/ { if (!blank) print; blank=1; next }
       /^#/ { print; blank=0; next }

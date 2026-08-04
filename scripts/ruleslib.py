@@ -49,6 +49,7 @@ class Rule:
 
 
 def parse_config(path: Path) -> Config:
+    # Preserve source locations so every diagnostic can point to the original line.
     config = Config(path=path)
     current: str | None = None
     seen_sections: set[str] = set()
@@ -91,6 +92,7 @@ def parse_rule(source: SourceLine) -> Rule | None:
     if kind not in RULE_TYPES:
         return None
     if kind == "AND":
+        # AND expressions contain nested commas, so a plain split would corrupt them.
         match = re.fullmatch(r"AND,(\(\(.+\)\)),([^,]+)", text)
         if not match:
             return Rule(source, kind, "", "")

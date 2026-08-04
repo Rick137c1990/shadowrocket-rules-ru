@@ -51,6 +51,7 @@ self-contained. The build generator removes identical duplicates from ready-made
 profiles.
 
 - [Human-readable module guide](docs/modules.md)
+- [Technical architecture](docs/architecture.md)
 - [Installation guide](docs/instructions.md)
 - [Custom rules and syntax](docs/manual.md)
 
