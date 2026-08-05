@@ -4,8 +4,33 @@
 
 [![Validate rules](https://github.com/Rick137c1990/shadowrocket-rules-ru/actions/workflows/validate.yml/badge.svg)](https://github.com/Rick137c1990/shadowrocket-rules-ru/actions/workflows/validate.yml)
 
+> **Project status: actively maintained.** The rule set will continue to evolve
+> while access restrictions and service infrastructure in Russia keep changing.
+
 Modular routing rules for Shadowrocket, designed for people who connect from
 Russia.
+
+## Quick Start
+
+1. Install Shadowrocket and add your own working proxy server.
+2. Choose [`minimal.conf`](shadowrocket/builds/minimal.conf),
+   [`advanced.conf`](shadowrocket/builds/advanced.conf), or
+   [`full.conf`](shadowrocket/builds/full.conf).
+3. Open the file on GitHub, tap **Raw**, and copy the URL.
+4. Import that URL into Shadowrocket and enable the downloaded configuration.
+5. Test both a `DIRECT` destination and a service expected to use `PROXY`.
+
+Prefer switchable features? Keep your existing configuration and follow the
+[illustrated module installation guide](docs/instructions.md).
+
+> ### Shadowrocket on the App Store
+>
+> **Rule-based proxy utility** by Shadow Launch Technology Limited<br>
+> Available for Apple platforms. A separate purchase may be required; availability
+> and price depend on your App Store region.<br>
+> [**View Shadowrocket in the App Store →**](https://apps.apple.com/app/shadowrocket/id932747118)
+>
+> Shadowrocket is a third-party application and is not affiliated with this project.
 
 ## Why this project exists
 
@@ -54,6 +79,7 @@ profiles.
 - [Technical architecture](docs/architecture.md)
 - [Installation guide](docs/instructions.md)
 - [Custom rules and syntax](docs/manual.md)
+- [Changelog](CHANGELOG.md)
 
 ## Repository layout
 

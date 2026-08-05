@@ -4,8 +4,34 @@
 
 [![Проверка правил](https://github.com/Rick137c1990/shadowrocket-rules-ru/actions/workflows/validate.yml/badge.svg)](https://github.com/Rick137c1990/shadowrocket-rules-ru/actions/workflows/validate.yml)
 
+> **Статус проекта: активно поддерживается.** Набор правил будет развиваться,
+> пока меняются ограничения доступа и инфраструктура сервисов в России.
+
 Модульные правила маршрутизации Shadowrocket для пользователей, подключающихся
 из России.
+
+## Быстрый старт
+
+1. Установите Shadowrocket и добавьте собственный рабочий прокси-сервер.
+2. Выберите [`minimal.conf`](shadowrocket/builds/minimal.conf),
+   [`advanced.conf`](shadowrocket/builds/advanced.conf) или
+   [`full.conf`](shadowrocket/builds/full.conf).
+3. Откройте файл на GitHub, нажмите **Raw** и скопируйте URL.
+4. Импортируйте этот URL в Shadowrocket и включите загруженную конфигурацию.
+5. Проверьте сайт, который должен открываться через `DIRECT`, и сервис, который
+   должен использовать `PROXY`.
+
+Нужны отдельно переключаемые функции? Оставьте существующую конфигурацию и
+используйте [пошаговую инструкцию со скриншотами](docs/instructions.ru.md).
+
+> ### Shadowrocket в App Store
+>
+> **Приложение с маршрутизацией трафика по правилам** от Shadow Launch Technology Limited<br>
+> Доступно на платформах Apple. Может потребоваться отдельная покупка; наличие и
+> цена зависят от региона App Store.<br>
+> [**Открыть Shadowrocket в App Store →**](https://apps.apple.com/app/shadowrocket/id932747118)
+>
+> Shadowrocket — стороннее приложение, не связанное с этим проектом.
 
 ## Почему появился этот проект
 
@@ -55,6 +81,7 @@ streaming или временно отключить модуль социаль
 - [Техническая архитектура](docs/architecture.ru.md)
 - [Инструкция по установке](docs/instructions.ru.md)
 - [Синтаксис и собственные правила](docs/manual.ru.md)
+- [История изменений](CHANGELOG.md)
 
 ## Структура репозитория
 
